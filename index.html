@@ -33,8 +33,8 @@
   @keyframes drive { 0%{ left:-300px; } 100%{ left:100%; } }
 
   /* Search */
-  .search-section { text-align:center; margin-top:-30px; }
-  .search-box { display:flex; justify-content:center; gap:10px; margin:10px auto; }
+  .search-section { text-align:center; padding:30px 0; background:#eef5ff; }
+  .search-box { display:flex; justify-content:center; gap:10px; margin:10px auto; flex-wrap:wrap; }
   .search-box input { padding:10px; border:1px solid #ccc; border-radius:6px; width:200px; }
   .btn { padding:10px 20px; background:#08306b; color:#fff; border:none; border-radius:6px; cursor:pointer; }
   .btn:hover { background:#0a4c9a; }
@@ -58,7 +58,6 @@
     <div class="menu-item" data-view="charges">Charges</div>
   </div>
   <div class="logo">
-    <!-- APSRTC logo placeholder -->
     <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Emblem_of_Andhra_Pradesh.svg" alt="APSRTC Logo">
   </div>
   <div class="account">👤</div>
@@ -80,7 +79,7 @@
   </div>
 </div>
 
-<!-- Search -->
+<!-- Search BELOW Banner -->
 <div class="search-section">
   <div class="search-box">
     <input id="startInput" placeholder="Enter start location">
