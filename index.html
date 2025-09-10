@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APSRTC Transport Dashboard</title>
+<style>
+  /* Reset */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Arial, sans-serif; background:#f4f8ff; }
+
+  /* Header */
+  header { background:#08306b; color:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { text-align:center; flex:1; }
+  .logo img { height:70px; }
+  .menu { display:flex; align-items:center; gap:20px; }
+  .menu-item { cursor:pointer; padding:6px 12px; border-radius:6px; }
+  .menu-item:hover, .menu-item.active { background:#fff; color:#08306b; }
+  .account { width:40px; height:40px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#08306b; font-weight:bold; }
+
+  /* Banner */
+  .banner { position:relative; height:300px; background:linear-gradient(#dceeff,#cce0ff); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .road { position:absolute; bottom:40px; width:100%; height:80px; background:#444; }
+  .lane { position:absolute; top:50%; width:100%; height:4px; background:repeating-linear-gradient(90deg,transparent 0 30px,#fff 30px 60px); }
+  
+  /* Bus */
+  .bus-wrap { position:absolute; bottom:80px; left:-300px; animation:drive 10s linear infinite; }
+  .bus { width:250px; height:100px; background:red; border-radius:15px; display:flex; align-items:center; justify-content:space-between; padding:10px; position:relative; box-shadow:0 4px 10px rgba(0,0,0,0.4); }
+  .window { width:40px; height:50px; background:#87ceeb; border:2px solid #fff; border-radius:4px; }
+  .wheel { width:40px; height:40px; background:#111; border-radius:50%; position:absolute; bottom:-20px; }
+  .wheel.left { left:40px; }
+  .wheel.right { right:40px; }
+  @keyframes drive { 0%{ left:-300px; } 100%{ left:100%; } }
+
+  /* Search */
+  .search-section { text-align:center; margin-top:-30px; }
+  .search-box { display:flex; justify-content:center; gap:10px; margin:10px auto; }
+  .search-box input { padding:10px; border:1px solid #ccc; border-radius:6px; width:200px; }
+  .btn { padding:10px 20px; background:#08306b; color:#fff; border:none; border-radius:6px; cursor:pointer; }
+  .btn:hover { background:#0a4c9a; }
+
+  /* Sections */
+  main { padding:20px; }
+  section { display:none; }
+  section.active { display:block; }
+  .data-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:15px; margin-top:15px; }
+  .card { background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="menu">
+    <div class="menu-item active" data-view="dashboard">Dashboard</div>
+    <div class="menu-item" data-view="buses">Bus Numbers</div>
+    <div class="menu-item" data-view="timings">Timings</div>
+    <div class="menu-item" data-view="charges">Charges</div>
+  </div>
+  <div class="logo">
+    <!-- APSRTC logo placeholder -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Emblem_of_Andhra_Pradesh.svg" alt="APSRTC Logo">
+  </div>
+  <div class="account">👤</div>
+</header>
+
+<!-- Banner -->
+<div class="banner">
+  <div class="bus-wrap">
+    <div class="bus">
+      <div class="window"></div>
+      <div class="window"></div>
+      <div class="window"></div>
+      <div class="wheel left"></div>
+      <div class="wheel right"></div>
+    </div>
+  </div>
+  <div class="road">
+    <div class="lane"></div>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="search-section">
+  <div class="search-box">
+    <input id="startInput" placeholder="Enter start location">
+    <input id="endInput" placeholder="Enter end location">
+  </div>
+  <button class="btn" id="searchBtn">🔍 Search Transports</button>
+  <div id="searchResults" class="data-grid"></div>
+</div>
+
+<!-- Main Sections -->
+<main>
+  <!-- Dashboard -->
+  <section id="view-dashboard" class="active">
+    <h2>Welcome to APSRTC Transport Dashboard</h2>
+    <p>Search and explore bus information below.</p>
+  </section>
+
+  <!-- Bus Numbers -->
+  <section id="view-buses">
+    <h2>Bus Numbers</h2>
+    <div id="busesList" class="data-grid"></div>
+  </section>
+
+  <!-- Timings -->
+  <section id="view-timings">
+    <h2>Bus Timings</h2>
+    <div id="timingsList" class="data-grid"></div>
+  </section>
+
+  <!-- Charges -->
+  <section id="view-charges">
+    <h2>Fare Charges</h2>
+    <div id="chargesList" class="data-grid"></div>
+  </section>
+</main>
+
+<script>
+  // Sample Bus Data
+  const buses = [
+    { no:"AP-16 A", start:"Vijayawada", end:"Tirupati", depart:"06:20", arrive:"10:45", charge:"₹450" },
+    { no:"AP-52 B", start:"Visakhapatnam", end:"Kadapa", depart:"07:15", arrive:"13:30", charge:"₹600" },
+    { no:"AP-09 101", start:"Guntur", end:"Hyderabad", depart:"05:00", arrive:"10:00", charge:"₹500" }
+  ];
+
+  // Renderers
+  function renderBuses(){
+    document.getElementById("busesList").innerHTML =
+      buses.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p></div>`).join("");
+  }
+  function renderTimings(){
+    document.getElementById("timingsList").innerHTML =
+      buses.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} (${b.depart}) → ${b.end} (${b.arrive})</p></div>`).join("");
+  }
+  function renderCharges(){
+    document.getElementById("chargesList").innerHTML =
+      buses.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p><p>Fare: ${b.charge}</p></div>`).join("");
+  }
+
+  // Menu switching
+  document.querySelectorAll(".menu-item").forEach(item=>{
+    item.addEventListener("click",()=>{
+      document.querySelectorAll(".menu-item").forEach(m=>m.classList.remove("active"));
+      item.classList.add("active");
+      document.querySelectorAll("main section").forEach(sec=>sec.classList.remove("active"));
+      document.getElementById("view-"+item.dataset.view).classList.add("active");
+    });
+  });
+
+  // Search
+  document.getElementById("searchBtn").addEventListener("click",()=>{
+    const start = document.getElementById("startInput").value.toLowerCase();
+    const end = document.getElementById("endInput").value.toLowerCase();
+    const results = buses.filter(b=>
+      (!start || b.start.toLowerCase().includes(start)) &&
+      (!end || b.end.toLowerCase().includes(end))
+    );
+    document.getElementById("searchResults").innerHTML =
+      results.length ? results.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p><p>${b.depart} - ${b.arrive}</p><p>Fare: ${b.charge}</p></div>`).join("")
+      : `<div class="card">No buses found</div>`;
+  });
+
+  // Load Data
+  renderBuses();
+  renderTimings();
+  renderCharges();
+</script>
+
+</body>
+</html>
