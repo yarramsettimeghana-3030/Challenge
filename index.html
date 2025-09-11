@@ -7,19 +7,20 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5faff;
+      background: linear-gradient(135deg, #e6f2ff, #ffffff);
       color: #002244;
     }
 
     /* HEADER */
     header {
-      background: #003366;
+      background: linear-gradient(90deg, #003366, #00509e);
       padding: 10px 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
       color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     header img {
@@ -35,8 +36,9 @@
 
     /* NAV MENU */
     nav {
-      background: #00509e;
+      background: linear-gradient(90deg, #00509e, #0073e6);
       width: 100%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
     nav ul {
@@ -61,7 +63,7 @@
     }
 
     nav ul li a:hover {
-      background: #0073e6;
+      background: #004080;
       border-radius: 6px;
     }
 
@@ -95,11 +97,12 @@
     .banner {
       position: relative;
       height: 300px;
-      background: linear-gradient(120deg, #0073e6, #66a3ff);
+      background: linear-gradient(120deg, #0073e6, #4da6ff, #80c1ff);
       display: flex;
       justify-content: center;
       align-items: flex-end;
       overflow: hidden;
+      border-bottom: 6px solid #004080;
     }
 
     .road {
@@ -141,6 +144,7 @@
       justify-content: space-around;
       animation: drive 10s linear infinite;
       z-index: 2;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
     }
 
     .bus-window {
@@ -173,32 +177,45 @@
       to { transform: rotate(360deg); }
     }
 
+    /* DASHBOARD CARD */
+    .dashboard {
+      background: linear-gradient(135deg, #ffffff, #e6f2ff);
+      margin: 30px auto;
+      width: 80%;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      padding: 30px;
+    }
+
     /* SEARCH SECTION */
     .search-box {
       text-align: center;
-      margin: 30px auto;
+      margin: 20px auto;
     }
 
     .search-box input {
-      padding: 10px;
+      padding: 12px;
       margin: 10px;
       border: 2px solid #00509e;
       border-radius: 6px;
       width: 220px;
+      font-size: 14px;
     }
 
     .search-box button {
       padding: 12px 25px;
-      background: #00509e;
+      background: linear-gradient(90deg, #00509e, #0073e6);
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       transition: 0.3s;
+      font-size: 15px;
+      font-weight: bold;
     }
 
     .search-box button:hover {
-      background: #0073e6;
+      background: linear-gradient(90deg, #004080, #0066cc);
     }
 
     /* RESULTS */
@@ -206,7 +223,6 @@
       text-align: center;
       margin: 20px auto;
       padding: 20px;
-      width: 70%;
       background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -214,12 +230,13 @@
 
     /* ALSO BOOK */
     .also-book {
-      background: linear-gradient(135deg, #004080, #0073e6);
+      background: linear-gradient(135deg, #0073e6, #004080);
       padding: 25px;
-      margin: 40px auto;
+      margin: 30px auto;
       text-align: center;
       border-radius: 12px;
       color: #fff;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
     }
 
     .also-book h2 {
@@ -230,6 +247,7 @@
       display: flex;
       justify-content: center;
       gap: 40px;
+      flex-wrap: wrap;
     }
 
     .book-options div {
@@ -253,7 +271,7 @@
     footer {
       margin-top: 30px;
       padding: 20px;
-      background: #002244;
+      background: linear-gradient(90deg, #002244, #003366);
       color: white;
       text-align: center;
     }
@@ -298,26 +316,29 @@
   <div class="road"></div>
 </section>
 
-<!-- SEARCH -->
-<section class="search-box">
-  <input type="text" id="start" placeholder="Starting Location">
-  <input type="text" id="end" placeholder="Ending Location"><br>
-  <button onclick="searchBus()">Search Transports</button>
-</section>
+<!-- DASHBOARD CARD -->
+<div class="dashboard">
+  <!-- SEARCH -->
+  <section class="search-box">
+    <input type="text" id="start" placeholder="Starting Location">
+    <input type="text" id="end" placeholder="Ending Location"><br>
+    <button onclick="searchBus()">Search Transports</button>
+  </section>
 
-<!-- RESULTS -->
-<div id="results"></div>
+  <!-- RESULTS -->
+  <div id="results"></div>
 
-<!-- ALSO BOOK -->
-<section class="also-book">
-  <h2>Also Book In</h2>
-  <div class="book-options">
-    <div>💳 Wallet</div>
-    <div>🚗 Cars</div>
-    <div>🚆 Trains</div>
-    <div>✈️ Airplanes</div>
-  </div>
-</section>
+  <!-- ALSO BOOK -->
+  <section class="also-book">
+    <h2>Also Book In</h2>
+    <div class="book-options">
+      <div>💳 Wallet</div>
+      <div>🚗 Cars</div>
+      <div>🚆 Trains</div>
+      <div>✈️ Airplanes</div>
+    </div>
+  </section>
+</div>
 
 <footer>
   <p>Contact: support@apsrtc.in | Helpline: 1800-425-5555</p>
