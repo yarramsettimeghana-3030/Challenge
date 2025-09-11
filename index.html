@@ -106,15 +106,31 @@
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 90px;
+      height: 100px;
       background: #1a1a1a;
-      border-top: 6px solid #cccccc;
       z-index: 1;
+    }
+
+    /* Road dashed line */
+    .road::before {
+      content: "";
+      position: absolute;
+      top: 45%;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: repeating-linear-gradient(
+        to right,
+        white,
+        white 40px,
+        transparent 40px,
+        transparent 80px
+      );
     }
 
     .bus {
       position: absolute;
-      bottom: 90px;
+      bottom: 100px;
       left: -300px;
       width: 220px;
       height: 110px;
