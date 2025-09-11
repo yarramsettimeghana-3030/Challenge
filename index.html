@@ -5,59 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>APSRTC Transport Dashboard</title>
 <style>
-  /* Reset */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: 'Segoe UI', sans-serif; background:linear-gradient(135deg,#fbeaff,#e0f7ff); }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#fff5eb,#e0f7ff);}
 
   /* Header */
-  header { background:#08306b; color:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
-  .logo img { height:70px; }
-  .menu { display:flex; align-items:center; gap:20px; }
-  .menu-item { position:relative; cursor:pointer; padding:6px 12px; border-radius:6px; transition:.3s; }
-  .menu-item:hover, .menu-item.active { background:#fff; color:#08306b; }
-  .submenu { display:none; position:absolute; top:35px; left:0; background:#fff; color:#08306b; border-radius:6px; box-shadow:0 3px 6px rgba(0,0,0,0.2); }
-  .submenu div { padding:8px 12px; white-space:nowrap; cursor:pointer; }
-  .submenu div:hover { background:#f0f0f0; }
-  .menu-item:hover .submenu { display:block; }
-  .account { width:40px; height:40px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#08306b; font-weight:bold; }
+  header{background:linear-gradient(90deg,#ff7e5f,#08306b);color:#fff;padding:12px 20px;
+    display:flex;align-items:center;justify-content:space-between;}
+  .logo img{height:65px;}
+  .menu{display:flex;align-items:center;gap:25px;}
+  .menu-item{position:relative;cursor:pointer;padding:8px 15px;border-radius:8px;transition:.3s;}
+  .menu-item:hover,.menu-item.active{background:#fff;color:#08306b;}
+  .submenu{display:none;position:absolute;top:38px;left:0;background:#fff;color:#08306b;
+    border-radius:6px;box-shadow:0 3px 6px rgba(0,0,0,0.2);}
+  .submenu div{padding:8px 14px;white-space:nowrap;cursor:pointer;}
+  .submenu div:hover{background:#f0f0f0;}
+  .menu-item:hover .submenu{display:block;}
+  .account{width:40px;height:40px;background:#fff;border-radius:50%;display:flex;
+    align-items:center;justify-content:center;color:#08306b;font-weight:bold;}
 
   /* Banner */
-  .banner { position:relative; height:280px; background:linear-gradient(120deg,#ffecd2,#fcb69f); display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .road { position:absolute; bottom:0; width:100%; height:90px; background:#444; }
-  .lane { position:absolute; top:50%; width:100%; height:6px; background:repeating-linear-gradient(90deg,transparent 0 40px,#fff 40px 80px); }
-
-  /* Bus */
-  .bus-wrap { position:absolute; bottom:90px; left:-300px; animation:drive 12s linear infinite; }
-  .bus { width:260px; height:110px; background:linear-gradient(to right,#ff1e56,#ff6b81); border-radius:20px; display:flex; align-items:center; justify-content:space-between; padding:12px; position:relative; box-shadow:0 6px 12px rgba(0,0,0,0.5); }
-  .window { width:42px; height:55px; background:#aee7ff; border:2px solid #fff; border-radius:5px; }
-  .wheel { width:45px; height:45px; background:#111; border-radius:50%; position:absolute; bottom:-20px; border:3px solid #888; animation:spin 1s linear infinite; }
-  .wheel.left { left:40px; }
-  .wheel.right { right:40px; }
-  @keyframes drive { 0%{ left:-300px; } 100%{ left:100%; } }
-  @keyframes spin { 0%{ transform:rotate(0deg); } 100%{ transform:rotate(360deg); } }
+  .banner{position:relative;height:280px;background:linear-gradient(120deg,#fcb69f,#ffecd2);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .road{position:absolute;bottom:0;width:100%;height:90px;background:#444;}
+  .lane{position:absolute;top:50%;width:100%;height:6px;
+    background:repeating-linear-gradient(90deg,transparent 0 40px,#fff 40px 80px);}
+  .bus-wrap{position:absolute;bottom:90px;left:-300px;animation:drive 12s linear infinite;}
+  .bus{width:260px;height:110px;background:linear-gradient(to right,#ff3c3c,#ff8c42);
+    border-radius:20px;display:flex;align-items:center;justify-content:space-between;
+    padding:12px;position:relative;box-shadow:0 6px 12px rgba(0,0,0,0.5);}
+  .window{width:42px;height:55px;background:#aee7ff;border:2px solid #fff;border-radius:5px;}
+  .wheel{width:45px;height:45px;background:#111;border-radius:50%;position:absolute;bottom:-20px;
+    border:3px solid #888;animation:spin 1s linear infinite;}
+  .wheel.left{left:40px;}
+  .wheel.right{right:40px;}
+  @keyframes drive{0%{left:-300px;}100%{left:100%;}}
+  @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
   /* Search */
-  .search-section { text-align:center; padding:35px 0; background:#f0f9ff; }
-  .search-box { display:flex; justify-content:center; gap:12px; margin:12px auto; flex-wrap:wrap; }
-  .search-box input { padding:12px; border:1px solid #ccc; border-radius:6px; width:220px; }
-  .btn { padding:12px 25px; background:#08306b; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
-  .btn:hover { background:#0a4c9a; }
+  .search-section{text-align:center;padding:35px 0;background:#f0f9ff;}
+  .search-box{display:flex;justify-content:center;gap:12px;margin:12px auto;flex-wrap:wrap;}
+  .search-box input{padding:12px;border:1px solid #ccc;border-radius:6px;width:220px;}
+  .btn{padding:12px 25px;background:#08306b;color:#fff;border:none;border-radius:6px;
+    cursor:pointer;font-weight:bold;}
+  .btn:hover{background:#0a4c9a;}
 
-  /* Dashboard with gradient + icons */
-  main { padding:20px; background:linear-gradient(160deg,#ffe3e3,#e3ffe9,#e3f0ff); border-radius:20px; margin:20px; }
-  section { display:none; }
-  section.active { display:block; }
-  .data-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:15px; margin-top:15px; }
-  .card { background:#fff; padding:15px; border-radius:12px; box-shadow:0 3px 7px rgba(0,0,0,0.15); }
+  /* Main */
+  main{padding:20px;background:linear-gradient(160deg,#e3ffe9,#ffe3e3,#e3f0ff);
+    border-radius:20px;margin:20px;}
+  section{display:none;}
+  section.active{display:block;}
+  .data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px;margin-top:15px;}
+  .card{background:#fff;padding:15px;border-radius:12px;box-shadow:0 3px 7px rgba(0,0,0,0.15);}
 
-  /* Rollover icons */
-  .transport-icons { display:flex; justify-content:center; gap:40px; margin:40px 0; }
-  .icon { font-size:40px; background:#fff; border-radius:50%; padding:20px; box-shadow:0 3px 8px rgba(0,0,0,0.2); transition:.3s; cursor:pointer; }
-  .icon:hover { transform:scale(1.2) rotate(10deg); background:#08306b; color:#fff; }
+  /* Transport Icons */
+  h3{text-align:center;margin:20px 0;color:#08306b;}
+  .transport-icons{display:flex;justify-content:center;gap:40px;margin:20px 0;}
+  .icon{font-size:38px;background:#fff;border-radius:50%;padding:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.2);transition:.3s;cursor:pointer;}
+  .icon:hover{transform:scale(1.2) rotate(10deg);background:#ff7e5f;color:#fff;}
 
   /* Footer */
-  footer { background:#08306b; color:#fff; padding:20px; text-align:center; margin-top:20px; border-radius:12px 12px 0 0; }
-  footer h4 { margin-bottom:8px; }
+  footer{background:#08306b;color:#fff;padding:20px;text-align:center;
+    margin-top:20px;border-radius:12px 12px 0 0;}
+  footer h4{margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -65,9 +75,10 @@
 <!-- Header -->
 <header>
   <div class="menu">
-    <div class="menu-item active" data-view="dashboard">Dashboard
+    <div class="menu-item active" data-view="dashboard">Home</div>
+    <div class="menu-item">Bus Details
       <div class="submenu">
-        <div data-view="buses">Bus Details</div>
+        <div data-view="buses">Bus Numbers</div>
         <div data-view="timings">Timings</div>
         <div data-view="charges">Charges</div>
       </div>
@@ -91,9 +102,7 @@
       <div class="wheel right"></div>
     </div>
   </div>
-  <div class="road">
-    <div class="lane"></div>
-  </div>
+  <div class="road"><div class="lane"></div></div>
 </div>
 
 <!-- Search -->
@@ -108,23 +117,21 @@
 
 <!-- Main Sections -->
 <main>
-  <!-- Dashboard -->
+  <!-- Home -->
   <section id="view-dashboard" class="active">
     <h2 style="text-align:center;">🚍 APSRTC Transport Dashboard</h2>
     <p style="text-align:center;">Explore buses and transport options with style.</p>
-
-    <!-- Transport Icons -->
+    <h3>Also book in</h3>
     <div class="transport-icons">
-      <div class="icon">💳</div>
+      <div class="icon">🚗</div>
       <div class="icon">🚆</div>
       <div class="icon">✈️</div>
-      <div class="icon">🚗</div>
     </div>
   </section>
 
   <!-- Bus Numbers -->
   <section id="view-buses">
-    <h2>Bus Details</h2>
+    <h2>Bus Numbers</h2>
     <div id="busesList" class="data-grid"></div>
   </section>
 
@@ -154,57 +161,54 @@
 <!-- Footer -->
 <footer>
   <h4>APSRTC © Government of Andhra Pradesh</h4>
-  <p>Contact: 1800-200-4599 | support@apsrtc.in</p>
+  <p>Helpline: 1800-200-4599 | support@apsrtc.in</p>
 </footer>
 
 <script>
-  // Sample Bus Data
-  const buses = [
-    { no:"AP-16 A", start:"Vijayawada", end:"Tirupati", depart:"06:20", arrive:"10:45", charge:"₹450" },
-    { no:"AP-52 B", start:"Visakhapatnam", end:"Kadapa", depart:"07:15", arrive:"13:30", charge:"₹600" },
-    { no:"AP-09 101", start:"Guntur", end:"Hyderabad", depart:"05:00", arrive:"10:00", charge:"₹500" }
+  const buses=[
+    {no:"AP-16 A",start:"Vijayawada",end:"Tirupati",depart:"06:20",arrive:"10:45",charge:"₹450"},
+    {no:"AP-52 B",start:"Visakhapatnam",end:"Kadapa",depart:"07:15",arrive:"13:30",charge:"₹600"},
+    {no:"AP-09 101",start:"Guntur",end:"Hyderabad",depart:"05:00",arrive:"10:00",charge:"₹500"}
   ];
 
   function renderBuses(){
-    document.getElementById("busesList").innerHTML =
+    document.getElementById("busesList").innerHTML=
       buses.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p></div>`).join("");
   }
   function renderTimings(){
-    document.getElementById("timingsList").innerHTML =
+    document.getElementById("timingsList").innerHTML=
       buses.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} (${b.depart}) → ${b.end} (${b.arrive})</p></div>`).join("");
   }
   function renderCharges(){
-    document.getElementById("chargesList").innerHTML =
+    document.getElementById("chargesList").innerHTML=
       buses.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p><p>Fare: ${b.charge}</p></div>`).join("");
   }
 
-  // Menu switching
-  document.querySelectorAll(".menu-item, .submenu div").forEach(item=>{
+  document.querySelectorAll(".menu-item,.submenu div").forEach(item=>{
     item.addEventListener("click",()=>{
-      document.querySelectorAll(".menu-item").forEach(m=>m.classList.remove("active"));
-      if(item.classList.contains("menu-item")) item.classList.add("active");
       document.querySelectorAll("main section").forEach(sec=>sec.classList.remove("active"));
-      document.getElementById("view-"+item.dataset.view).classList.add("active");
+      document.querySelectorAll(".menu-item").forEach(m=>m.classList.remove("active"));
+      if(item.dataset.view){
+        document.getElementById("view-"+item.dataset.view).classList.add("active");
+        if(item.classList.contains("menu-item")) item.classList.add("active");
+      }
     });
   });
 
-  // Search
   document.getElementById("searchBtn").addEventListener("click",()=>{
-    const start = document.getElementById("startInput").value.toLowerCase();
-    const end = document.getElementById("endInput").value.toLowerCase();
-    const results = buses.filter(b=>
-      (!start || b.start.toLowerCase().includes(start)) &&
-      (!end || b.end.toLowerCase().includes(end))
+    const start=document.getElementById("startInput").value.toLowerCase();
+    const end=document.getElementById("endInput").value.toLowerCase();
+    const results=buses.filter(b=>
+      (!start||b.start.toLowerCase().includes(start))&&(!end||b.end.toLowerCase().includes(end))
     );
-    document.getElementById("searchResults").innerHTML =
-      results.length ? results.map(b=>`<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p><p>${b.depart} - ${b.arrive}</p><p>Fare: ${b.charge}</p></div>`).join("")
-      : `<div class="card">No buses found</div>`;
+    document.getElementById("searchResults").innerHTML=
+      results.length?results.map(b=>
+        `<div class="card"><h4>${b.no}</h4><p>${b.start} → ${b.end}</p>
+        <p>${b.depart} - ${b.arrive}</p><p>Fare: ${b.charge}</p></div>`).join("")
+      :`<div class="card">No buses found</div>`;
   });
 
-  renderBuses();
-  renderTimings();
-  renderCharges();
+  renderBuses();renderTimings();renderCharges();
 </script>
-
 </body>
 </html>
