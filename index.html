@@ -1,408 +1,329 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>APSRTC — Andhra Pradesh Bus Dashboard</title>
+  <meta charset="UTF-8">
+  <title>APSRTC Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      color: #222;
+    }
 
-<style>
-  :root{
-    --primary-1:#0052cc;   /* deep blue */
-    --primary-2:#00b894;   /* green */
-    --accent:#ff6b35;      /* orange-red */
-    --bg1:linear-gradient(135deg,#fff7f0,#e8f8f5);
-    --card-bg: #ffffff;
-    --muted:#6b7280;
-    --glass: rgba(255,255,255,0.7);
-  }
+    /* HEADER */
+    header {
+      background: #b22222;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
 
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial; background:var(--bg1); color:#06283d; -webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
+    header img {
+      height: 80px;
+    }
 
-  /* ====== HEADER ====== */
-  header.topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 22px;background:linear-gradient(90deg,var(--primary-1),#0077ff);
-    color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 6px 18px rgba(2,6,23,0.12)
-  }
+    .account {
+      position: absolute;
+      right: 20px;
+      font-size: 26px;
+      color: #fff;
+      cursor: pointer;
+    }
 
-  /* left placeholder (menu small) & center logo & right utilities */
-  .left-controls{display:flex;gap:12px;align-items:center}
-  .center-logo{display:flex;align-items:center;justify-content:center;flex:1}
-  .center-logo img{height:64px;width:auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.18));}
-  .right-controls{display:flex;gap:12px;align-items:center}
+    /* NAV MENU */
+    nav {
+      background: #333;
+      width: 100%;
+    }
 
-  .main-menu{display:flex;gap:12px;align-items:center}
-  .menu-item{padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer;transition:all .18s}
-  .menu-item:hover{background:rgba(255,255,255,0.12)}
-  .menu-item.active{background:rgba(255,255,255,0.18)}
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
 
-  .account{width:44px;height:44px;border-radius:50%;background:#fff;color:var(--primary-1);
-    display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 6px 14px rgba(2,6,23,0.12);cursor:pointer}
+    nav ul li {
+      position: relative;
+    }
 
-  /* ====== LAYOUT ====== */
-  .container{max-width:1200px;margin:18px auto;padding:0 18px 60px}
+    nav ul li a {
+      display: block;
+      padding: 15px 20px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-  /* ====== DASHBOARD / CENTER CARD ====== */
-  .dashboard-card{
-    background:linear-gradient(135deg,#fffbf6,#f0fcff);
-    border-radius:18px;padding:18px;box-shadow:0 18px 45px rgba(2,6,23,0.08);
-    overflow:hidden;position:relative;
-  }
+    nav ul li a:hover {
+      background: #ff8c00;
+    }
 
-  /* decorative transport pattern (SVG shapes) */
-  .decor{
-    position:absolute;right:-80px;top:-40px;opacity:0.08;transform:rotate(12deg);width:420px;height:420px;
-    background: radial-gradient(circle at 20% 30%,rgba(0,82,204,0.06),transparent 30%),
-                radial-gradient(circle at 80% 70%,rgba(255,107,53,0.03),transparent 30%);
-    border-radius:50%;
-    pointer-events:none;
-  }
+    /* Dropdown */
+    nav ul li ul {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      background: #fff;
+      display: none;
+      width: 200px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
 
-  /* header row inside card */
-  .card-head{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 14px 8px}
-  .card-head h1{font-size:20px;margin:0}
-  .card-head p{margin:0;color:var(--muted)}
+    nav ul li:hover ul {
+      display: block;
+    }
 
-  /* Banner area with road */
-  .banner{
-    margin-top:6px;border-radius:14px;overflow:visible;position:relative;height:320px;
-    background:linear-gradient(180deg,#cbe8ff 0%, #edf8ff 60%);
-    display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;
-    border: 1px solid rgba(3, 37, 76, 0.04);
-  }
+    nav ul li ul li a {
+      color: #222;
+      font-weight: normal;
+    }
 
-  /* skyline silhouette */
-  .skyline{
-    position:absolute;left:0;right:0;top:8px;height:120px;opacity:0.22;background:
-      radial-gradient(circle at 10% 20%, rgba(0,0,0,.02), transparent 20%),
-      linear-gradient(180deg, transparent, rgba(0,0,0,.02));
-    pointer-events:none;
-  }
+    nav ul li ul li a:hover {
+      background: #ddd;
+    }
 
-  /* road */
-  .road{
-    position:absolute;bottom:0;left:0;right:0;height:110px;background:linear-gradient(180deg,#2e2e2e,#1a1a1a);
-    box-shadow:inset 0 6px 40px rgba(0,0,0,0.35);
-    display:flex;align-items:center;justify-content:center
-  }
-  .lane{width:85%;height:10px;background:repeating-linear-gradient(90deg,transparent 0 36px,#e9e9e9 36px 72px);
-      border-radius:6px;opacity:0.16;position:relative}
+    /* BANNER WITH BUS */
+    .banner {
+      position: relative;
+      height: 300px;
+      background: linear-gradient(90deg, #87cefa, #f0e68c);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      overflow: hidden;
+    }
 
-  /* 3D-ish bus on side view */
-  .bus-wrap{position:absolute;bottom:40px;left:-360px;transform:translateZ(0);animation:drive 10s linear infinite}
-  .bus{
-    width:360px;height:130px;border-radius:20px;position:relative;padding:16px 24px;
-    background:linear-gradient(90deg,#ff3b3b 0%,#ff855a 70%);
-    box-shadow:0 14px 30px rgba(3,10,26,0.22);
-    display:flex;gap:10px;align-items:center;
-  }
-  /* bus front grill */
-  .bus .cab{width:70px;height:72px;background:rgba(255,255,255,0.08);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
-  .bus .windows{display:flex;gap:8px;flex:1;align-items:center;justify-content:center}
-  .win{width:58px;height:66px;border-radius:8px;background:linear-gradient(180deg,#e6f7ff,#97dffb);border:3px solid rgba(255,255,255,0.7)}
-  .bus .logo-side{position:absolute;left:24px;bottom:16px;color:#fff;font-weight:800;font-size:14px}
+    .road {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 90px;
+      background: #333;
+      border-top: 6px solid #999;
+      z-index: 1;
+    }
 
-  /* wheels */
-  .wheel{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#444,#222);position:absolute;bottom:-34px;border:8px solid rgba(0,0,0,0.45);box-shadow:inset -6px -6px 15px rgba(255,255,255,0.03)}
-  .wheel.left{left:54px;animation:spin 0.85s linear infinite}
-  .wheel.right{left:220px;animation:spin 0.85s linear infinite}
+    .bus {
+      position: absolute;
+      bottom: 90px;
+      left: -300px;
+      width: 220px;
+      height: 110px;
+      background: red;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      animation: drive 10s linear infinite;
+      z-index: 2;
+    }
 
-  @keyframes drive{0%{left:-420px}100%{left:110%}}
-  @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    .bus-window {
+      width: 35px;
+      height: 45px;
+      background: #add8e6;
+      border-radius: 5px;
+    }
 
-  /* Controls below banner - centered */
-  .search-row{display:flex;justify-content:center;gap:10px;margin-top:18px;align-items:center}
-  .loc-box{display:flex;align-items:center;background:var(--card-bg);padding:10px 12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.06)}
-  .loc-box input{border:0;outline:0;padding:8px 10px;font-size:14px;width:220px}
-  .loc-dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:8px}
-  .loc-dot.start{background:var(--primary-1)} .loc-dot.end{background:var(--accent)}
-  .search-btn{background:linear-gradient(90deg,var(--accent),#ff8a5c);border:0;color:#fff;padding:12px 18px;border-radius:12px;font-weight:800;cursor:pointer;box-shadow:0 10px 26px rgba(255,107,53,0.12)}
+    .wheel {
+      position: absolute;
+      bottom: -22px;
+      width: 45px;
+      height: 45px;
+      background: black;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
 
-  /* result grid */
-  .results{margin-top:16px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .wheel.left { left: 25px; }
+    .wheel.right { right: 25px; }
 
-  .bus-card{background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 10px 26px rgba(2,6,23,0.05)}
-  .bus-card h4{margin:0 0 6px}
-  .muted{color:var(--muted);font-size:13px;margin-top:6px}
+    @keyframes drive {
+      from { left: -250px; }
+      to { left: 100%; }
+    }
 
-  /* Submenu for Bus Details (express, ac, normal) */
-  .subcontrols{display:flex;gap:8px;justify-content:center;margin-top:16px}
-  .subbtn{padding:8px 14px;border-radius:999px;border:1px solid rgba(2,6,23,0.06);cursor:pointer;background:linear-gradient(90deg,#fff,#f6fbff);font-weight:700;color:var(--primary-1)}
-  .subbtn.active{background:linear-gradient(90deg,var(--primary-2),#00d19a);color:#fff;border-color:transparent;box-shadow:0 10px 25px rgba(0,209,154,0.12)}
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
-  /* Roll-over icons (wallet, train, airplane, car) */
-  .mini-tools{display:flex;gap:14px;justify-content:center;margin-top:18px}
-  .tool{width:86px;height:86px;border-radius:18px;background:linear-gradient(180deg,#fff,#fafafa);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 24px rgba(2,6,23,0.06);transition:all .22s;font-weight:800}
-  .tool:hover{transform:translateY(-8px) rotate(-4deg);box-shadow:0 18px 40px rgba(2,6,23,0.12);background:linear-gradient(145deg,#ffe6d4,#ffdcd4)}
-  .tool span{font-size:28px;margin-bottom:6px}
+    /* SEARCH SECTION */
+    .search-box {
+      text-align: center;
+      margin: 30px auto;
+    }
 
-  /* footer */
-  footer{margin-top:22px;padding:18px;border-radius:12px;background:linear-gradient(90deg,#002a6b,#0052cc);color:#fff;text-align:center}
+    .search-box input {
+      padding: 10px;
+      margin: 10px;
+      border: 2px solid #b22222;
+      border-radius: 6px;
+      width: 220px;
+    }
 
-  /* responsive */
-  @media (max-width:920px){
-    .bus{width:300px;height:100px}
-    .bus-wrap{bottom:38px}
-    .wheel.left{left:34px} .wheel.right{left:190px}
-    .loc-box input{width:160px}
-    .center-logo img{height:52px}
-  }
+    .search-box button {
+      padding: 12px 25px;
+      background: #b22222;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-  @media (max-width:560px){
-    .bus{width:260px;height:92px;padding:10px}
-    .wheel.left{left:28px} .wheel.right{left:156px}
-    .search-row{flex-direction:column;gap:12px}
-  }
+    .search-box button:hover {
+      background: #ff4500;
+    }
 
-</style>
+    /* RESULTS */
+    #results {
+      text-align: center;
+      margin: 20px auto;
+      padding: 20px;
+      width: 70%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* ALSO BOOK */
+    .also-book {
+      background: linear-gradient(135deg, #36d1dc, #5b86e5);
+      padding: 25px;
+      margin: 40px auto;
+      text-align: center;
+      border-radius: 12px;
+      color: #fff;
+    }
+
+    .also-book h2 {
+      margin-bottom: 20px;
+    }
+
+    .book-options {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .book-options div {
+      padding: 15px;
+      background: #fff;
+      border-radius: 10px;
+      width: 130px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+      cursor: pointer;
+      color: #222;
+      font-weight: bold;
+    }
+
+    .book-options div:hover {
+      transform: translateY(-5px);
+      background: #f0f8ff;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 30px;
+      padding: 20px;
+      background: #333;
+      color: white;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="left-controls">
-    <nav class="main-menu" aria-label="Main navigation">
-      <div class="menu-item" data-view="home">Home</div>
-      <div class="menu-item" data-view="bus-details" id="busMenu">Bus Details
-        <!-- submenu (hover) --><div class="submenu" style="min-width:160px">
-          <div class="submenu-item" data-sub="all" data-view="bus-details">All</div>
-          <div class="submenu-item" data-sub="express" data-view="bus-details">Express</div>
-          <div class="submenu-item" data-sub="ac" data-view="bus-details">AC Bus</div>
-          <div class="submenu-item" data-sub="normal" data-view="bus-details">Normal</div>
-        </div>
-      </div>
-
-      <div class="menu-item" data-view="charges">Charges</div>
-    </nav>
-  </div>
-
-  <div class="center-logo" aria-hidden="true">
-    <!-- Center Government logo - replace src with official APSRTC logo if available -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Emblem_of_Andhra_Pradesh.svg" alt="Government of Andhra Pradesh">
-  </div>
-
-  <div class="right-controls">
-    <div class="menu-item" style="display:flex;align-items:center;gap:8px" id="helpBtn">Help</div>
-    <div class="account" title="Your account">A</div>
-  </div>
+<header>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Emblem_of_Andhra_Pradesh.svg/1200px-Emblem_of_Andhra_Pradesh.svg.png" alt="AP Govt Logo">
+  <div class="account">👤</div>
 </header>
 
-<!-- Main container -->
-<div class="container">
-  <div class="dashboard-card">
+<!-- NAVIGATION -->
+<nav>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Bus Charges</a>
+      <ul>
+        <li><a href="#">Charges</a></li>
+        <li><a href="#">Discounts</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Bus Details</a>
+      <ul>
+        <li><a href="#">Express</a></li>
+        <li><a href="#">AC Bus</a></li>
+        <li><a href="#">Normal</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-    <div class="decor" aria-hidden="true"></div>
-
-    <div class="card-head">
-      <div>
-        <h1>APSRTC — Andhra Pradesh State Road Transport</h1>
-        <p class="muted">Live routes, timings, fares and booking helpers</p>
-      </div>
-      <div style="text-align:right">
-        <div class="muted">Helpline</div>
-        <div style="font-weight:800; color:var(--primary-1)">1800-425-5555</div>
-      </div>
-    </div>
-
-    <!-- Banner -->
-    <div class="banner" role="region" aria-label="Animated bus banner">
-      <div class="skyline" aria-hidden="true"></div>
-
-      <!-- bus moved on road -->
-      <div class="bus-wrap" aria-hidden="true">
-        <div class="bus" role="img" aria-label="moving bus">
-          <div class="cab">BUS</div>
-          <div class="windows">
-            <div class="win" aria-hidden="true"></div>
-            <div class="win" aria-hidden="true"></div>
-            <div class="win" aria-hidden="true"></div>
-          </div>
-          <div class="logo-side">APSRTC</div>
-          <div class="wheel left" aria-hidden="true"></div>
-          <div class="wheel right" aria-hidden="true"></div>
-        </div>
-      </div>
-
-      <div class="road" aria-hidden="true"><div class="lane"></div></div>
-    </div>
-
-    <!-- search controls below banner -->
-    <div style="text-align:center">
-      <div class="search-row" role="search" aria-label="Search buses by start and end location">
-        <div class="loc-box" title="Start location">
-          <span class="loc-dot start" aria-hidden="true"></span>
-          <input id="startInput" placeholder="Start location (e.g., Vijayawada)" aria-label="Start location">
-        </div>
-
-        <div class="loc-box" title="End location">
-          <span class="loc-dot end" aria-hidden="true"></span>
-          <input id="endInput" placeholder="End location (e.g., Tirupati)" aria-label="End location">
-        </div>
-
-        <button class="search-btn" id="searchBtn">🔍 Search Transports</button>
-      </div>
-
-      <!-- submenu filter for bus types -->
-      <div class="subcontrols" aria-hidden="false">
-        <button class="subbtn active" data-filter="all">All</button>
-        <button class="subbtn" data-filter="express">Express</button>
-        <button class="subbtn" data-filter="ac">AC Bus</button>
-        <button class="subbtn" data-filter="normal">Normal</button>
-      </div>
-
-      <!-- results -->
-      <div id="resultsArea" class="results" style="margin-top:18px" aria-live="polite"></div>
-
-      <!-- mini tools (rollover icons) -->
-      <div class="mini-tools" aria-hidden="false">
-        <div class="tool" title="Wallet / Payments"><span>💳</span><div>Wallet</div></div>
-        <div class="tool" title="Train bookings"><span>🚆</span><div>Train</div></div>
-        <div class="tool" title="Flight bookings"><span>✈️</span><div>Flights</div></div>
-        <div class="tool" title="Car booking"><span>🚗</span><div>Cars</div></div>
-      </div>
-
-    </div>
+<!-- BANNER -->
+<section class="banner">
+  <div class="bus">
+    <div class="bus-window"></div>
+    <div class="bus-window"></div>
+    <div class="bus-window"></div>
+    <div class="wheel left"></div>
+    <div class="wheel right"></div>
   </div>
+  <div class="road"></div>
+</section>
 
-  <!-- Footer with contact -->
-  <footer>
-    <div style="font-weight:800">APSRTC — Customer Care</div>
-    <div class="muted" style="margin-top:6px">Helpline: <strong>1800-425-5555</strong> • Email: support@apsrtc.ap.gov.in</div>
-    <div style="margin-top:8px;font-size:13px;opacity:.92">© Government of Andhra Pradesh — APSRTC</div>
-  </footer>
-</div>
+<!-- SEARCH -->
+<section class="search-box">
+  <input type="text" id="start" placeholder="Starting Location">
+  <input type="text" id="end" placeholder="Ending Location"><br>
+  <button onclick="searchBus()">Search Transports</button>
+</section>
 
-<!-- ======= JavaScript (embedded) ======= -->
+<!-- RESULTS -->
+<div id="results"></div>
+
+<!-- ALSO BOOK -->
+<section class="also-book">
+  <h2>Also Book In</h2>
+  <div class="book-options">
+    <div>💳 Wallet</div>
+    <div>🚗 Cars</div>
+    <div>🚆 Trains</div>
+    <div>✈️ Airplanes</div>
+  </div>
+</section>
+
+<footer>
+  <p>Contact: support@apsrtc.in | Helpline: 1800-425-5555</p>
+  <p>© APSRTC Government Transport System</p>
+</footer>
+
 <script>
-  /* Sample dataset of Andhra Pradesh buses (representative) */
-  const BUS_DATA = [
-    { no: "AP-16A-101", start: "Vijayawada", end: "Tirupati", depart: "06:20", arrive: "10:45", type: "express", fare: 420 },
-    { no: "AP-16A-102", start: "Vijayawada", end: "Tirupati", depart: "12:30", arrive: "16:40", type: "ac", fare: 620 },
-    { no: "AP-52B-201", start: "Visakhapatnam", end: "Kadapa", depart: "07:15", arrive: "13:30", type: "normal", fare: 520 },
-    { no: "AP-09-101", start: "Guntur", end: "Hyderabad", depart: "05:00", arrive: "10:00", type: "express", fare: 480 },
-    { no: "AP-33C-303", start: "Tirupati", end: "Vijayawada", depart: "12:30", arrive: "16:50", type: "normal", fare: 380 },
-    { no: "AP-44D-010", start: "Nellore", end: "Chennai", depart: "09:30", arrive: "13:15", type: "ac", fare: 720 },
-    { no: "AP-61E-404", start: "Kadapa", end: "Anantapur", depart: "08:00", arrive: "11:45", type: "normal", fare: 330 },
-    { no: "AP-02EX-777", start: "Visakhapatnam", end: "Vijayawada", depart: "09:00", arrive: "14:30", type: "express", fare: 580 },
-    { no: "AP-55AC-900", start: "Vijayawada", end: "Guntur", depart: "10:15", arrive: "11:10", type: "ac", fare: 150 }
-  ];
+  function searchBus() {
+    const start = document.getElementById("start").value.trim();
+    const end = document.getElementById("end").value.trim();
+    const results = document.getElementById("results");
 
-  // Utility: case-insensitive contains
-  function hasMatch(a,b){ return a.toLowerCase().includes(b.toLowerCase()); }
-
-  // DOM refs
-  const startInput = document.getElementById('startInput');
-  const endInput = document.getElementById('endInput');
-  const searchBtn = document.getElementById('searchBtn');
-  const resultsArea = document.getElementById('resultsArea');
-  const subBtns = document.querySelectorAll('.subbtn');
-
-  // current filter state
-  let CURRENT_TYPE_FILTER = 'all';
-
-  // friendly formatter
-  function createBusCard(b){
-    return `
-      <div class="bus-card" role="article">
-        <h4>${escapeHtml(b.no)} <span style="float:right;color:var(--muted);font-weight:700;text-transform:uppercase">${b.type}</span></h4>
-        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
-          <div><strong>${escapeHtml(b.start)}</strong> → <strong>${escapeHtml(b.end)}</strong></div>
-          <div>${escapeHtml(b.depart)} — ${escapeHtml(b.arrive)}</div>
-        </div>
-        <div class="muted">Fare: ₹${b.fare}</div>
-      </div>
-    `;
-  }
-
-  function escapeHtml(s){ return (s+'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-  // Search logic: filter dataset
-  function runSearch(){
-    const s = startInput.value.trim();
-    const e = endInput.value.trim();
-    // require at least start or end
-    if(!s && !e){
-      resultsArea.innerHTML = `<div class="bus-card"><strong>Please enter start and/or end location to search (e.g. Vijayawada, Tirupati).</strong></div>`;
-      return;
-    }
-
-    // filter by text
-    let results = BUS_DATA.filter(b=>{
-      const matchStart = s ? hasMatch(b.start, s) || hasMatch(b.end, s) : true;
-      const matchEnd   = e ? hasMatch(b.end, e) || hasMatch(b.start, e) : true;
-      return matchStart && matchEnd;
-    });
-
-    // type filter
-    if(CURRENT_TYPE_FILTER !== 'all'){
-      results = results.filter(b => b.type === CURRENT_TYPE_FILTER);
-    }
-
-    // If searching within Andhra Pradesh - show friendly message and sort by depart
-    if(results.length>0){
-      // sort by depart time (simple)
-      results.sort((a,b)=>{
-        const tA = toMinutes(a.depart), tB = toMinutes(b.depart);
-        return tA - tB;
-      });
-      // render
-      resultsArea.innerHTML = results.map(createBusCard).join('');
+    if (start && end) {
+      results.innerHTML = `
+        <h3>Available Buses from ${start} to ${end}</h3>
+        <p><b>Bus No:</b> AP05 Z1234 | <b>Type:</b> Express | <b>Timing:</b> 8:00 AM | <b>Fare:</b> ₹250</p>
+        <p><b>Bus No:</b> AP05 Z5678 | <b>Type:</b> AC Bus | <b>Timing:</b> 12:00 PM | <b>Fare:</b> ₹400</p>
+        <p><b>Bus No:</b> AP05 Z9999 | <b>Type:</b> Normal | <b>Timing:</b> 6:00 PM | <b>Fare:</b> ₹180</p>
+      `;
     } else {
-      resultsArea.innerHTML = `<div class="bus-card"><strong>No transports found for the given locations and filters.</strong></div>`;
+      results.innerHTML = "<p style='color:red'>⚠️ Please enter both start and end locations.</p>";
     }
   }
-
-  function toMinutes(t){
-    // "HH:MM" -> minutes
-    const parts = t.split(':').map(Number);
-    if(parts.length<2) return 0;
-    return parts[0]*60 + parts[1];
-  }
-
-  // Sub filter clicks
-  subBtns.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      subBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      CURRENT_TYPE_FILTER = btn.dataset.filter;
-      // if results are visible, re-run search to apply filter
-      if(resultsArea.innerHTML.trim() !== '') runSearch();
-    });
-  });
-
-  // Search button
-  searchBtn.addEventListener('click', runSearch);
-  // Enter key on inputs triggers search
-  [startInput,endInput].forEach(inp=>{
-    inp.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') runSearch(); })
-  });
-
-  // Submenu items in header to filter by type
-  document.querySelectorAll('.submenu-item').forEach(menuEl=>{
-    menuEl.addEventListener('click', (ev)=>{
-      // set type filter, add active class to related subbutton
-      const sub = menuEl.dataset.sub || 'all';
-      CURRENT_TYPE_FILTER = sub;
-      subBtns.forEach(b=> b.classList.toggle('active', b.dataset.filter === sub));
-      // show results panel by switching scroll to results
-      runSearch();
-      window.scrollTo({top:200, behavior:'smooth'});
-    });
-  });
-
-  // Initialize: show some default highlights for dashboard
-  resultsArea.innerHTML = BUS_DATA.slice(0,4).map(createBusCard).join('');
-
-  /* Optional: small accessibility helpers (announce search) */
-  // ensure resultsArea is focused after search for screen readers
-  function announceResults(){
-    resultsArea.setAttribute('tabindex','-1');
-    resultsArea.focus({preventScroll:true});
-  }
-
-  // call announce on search
-  searchBtn.addEventListener('click', announceResults);
 </script>
+
 </body>
 </html>
+
